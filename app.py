@@ -1,9 +1,4 @@
 import streamlit as st
-import pandas_datareader as pdr
-
-import streamlit as st
-
-import streamlit as st
 
 def main():
     st.title("Main Page")
