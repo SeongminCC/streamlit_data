@@ -1,9 +1,10 @@
 import streamlit as st
 import pandas as pd
+import torch
 
 def main():
     st.title("Main Page")
-    st.write("Welcome to the Main Pageddd.")
+    st.write("Welcome to the Main Page.")
 
     user_input = st.text_input("Enter a number:")
 
