@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import torch
+import lightgbm as lgb
 
 def main():
     st.title("Main Page")
