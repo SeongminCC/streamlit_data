@@ -5,7 +5,7 @@ import torch
 
 def main():
     st.title("Main Page")
-    st.write("Welcome to the Main Page.")
+    st.write("Welcome to the Main Pageaaa.")
 
     user_input = st.text_input("Enter a number:")
 
