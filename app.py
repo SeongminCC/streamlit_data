@@ -1,5 +1,3 @@
-!pip install lightgbm
-
 import streamlit as st
 import pandas as pd
 import lightgbm as lgb
