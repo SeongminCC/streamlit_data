@@ -3,4 +3,3 @@ torch
 joblib
 matplotlib
 plotly
-matplotlib.pyplot
