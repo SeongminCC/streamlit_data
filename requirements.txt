@@ -1,2 +1,5 @@
 lightgbm
 torch
+joblib
+matplotlib
+plotly
