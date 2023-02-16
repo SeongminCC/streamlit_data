@@ -35,9 +35,9 @@ if st.button("Submit"):
             
         else:
             for i in range(len(list_1)):
-                st.write(f"**{list_1[i]} : {list_2[i]}원 / {list_3[i]}원**")
+                st.write(f"**{list_1[i]} : {int(list_2[i])}원 / {int(list_3[i])}원**")
             st.write('---')
-            st.write(f"**보험료 총합 : {sum(list_2)}원**")
+            st.write(f"**보험료 총합 : {int(sum(list_2))}원**")
         
     else:
         st.write('죄송합니다. 현재 고객님을 위한 상품이 준비되어 있지 않습니다.')
