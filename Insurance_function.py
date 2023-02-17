@@ -1,4 +1,4 @@
-# Insurance Premium Calculator ver 2.0
+# Insurance Premium Calculator ver 3.2
 
 # import
 import pandas as pd
@@ -6,6 +6,7 @@ import numpy as np
 
 # data 불러오기
 insurance_premium=pd.read_excel('./data/insurance_premium.xlsx')
+insurance_premium_info=pd.read_excel('./data/insurance_premium_info.xlsx')
 
 # 보험료 계산기
 # insurance_premium : data
@@ -32,8 +33,8 @@ def calculator(insurance_premium, disease_risk_li, age, insurance_premium_max):
     value_min=[0,0,0,0,0]; value_rate=[0,0,0,0,0]; sum_value_rate=[0,0,0,0,0]
     
     # return을 위한 리스트들
-    list_1=['기본특약','심혈관질환','대사질환','뇌혈관질환','간질환']
-    list_2=[0,0,0,0,0]; list_3=[0,0,0,0,0]
+    list_1=['기본특약','심혈관질환','대사질환','뇌혈관질환','간질환','총합']
+    list_2=[0,0,0,0,0,0]; list_3=[0,0,0,0,0,0]; list_4=[0,0,0,0,0,0]
     
     # 보험료 계산에 필요한 값들 정리
     for i in range(5):
@@ -43,13 +44,25 @@ def calculator(insurance_premium, disease_risk_li, age, insurance_premium_max):
     value_rate[0]=price_gap*np.array(insurance_premium['기본특약'])*disease_risk_avg
     for i in range(1,5):
         value_rate[i]=price_gap*np.array(insurance_premium.iloc[:,i+6])*disease_risk_li[i-1]
+
     sum_value_rate_disease=np.sum(np.array(value_rate[1:5]))
+    
+    for i in range(5):
+        list_4[i]=sum(price_max*np.array(insurance_premium.iloc[:,i+6]))
+    list_4[5]=sum(list_4)
     
     # 보험료 출력을 위한 보험료 재조정과 출력
     if sum_value_min>insurance_premium_max:
-        list_3[0]=sum_value_min
         
-        return list_1, list_2, list_3
+        for i in range(5):
+            list_3[i]=value_min[i]
+        list_3[5]=sum(list_3)
+        
+        ipc_df=pd.DataFrame({'내보험료':list_2, '적정보험료':list_3, '최대보험료':list_4}, index=list_1)
+        for i in range(0,3):
+            ipc_df.iloc[:,i]=ipc_df.iloc[:,i].map('{:,.0f}'.format)+'원'
+        
+        return ipc_df
 
     elif sum_value_min+sum_value_rate_disease>insurance_premium_max:
 
@@ -58,11 +71,16 @@ def calculator(insurance_premium, disease_risk_li, age, insurance_premium_max):
             sum_value_rate[i]=np.floor(sum(value_rate[i]*((insurance_premium_max-sum_value_min)/sum_value_rate_disease)))
 
         # 보험료 출력을 위한 list 저장
-        list_2[0]=value_min[0]; list_3[0]=value_min[0]+int(sum(value_rate[0]))
+        list_2[0]=value_min[0]; list_3[0]=value_min[0]
         for i in range(1,5):
             list_2[i]=int(value_min[i]+sum_value_rate[i]); list_3[i]=value_min[i]+int(sum(value_rate[i]))
-
-        return list_1, list_2, list_3
+        list_2[5]=sum(list_2); list_3[5]=sum(list_3)
+        
+        ipc_df=pd.DataFrame({'내보험료':list_2, '적정보험료':list_3, '최대보험료':list_4}, index=list_1)
+        for i in range(0,3):
+            ipc_df.iloc[:,i]=ipc_df.iloc[:,i].map('{:,.0f}'.format)+'원'
+        
+        return ipc_df
         
     else:
 
@@ -77,5 +95,10 @@ def calculator(insurance_premium, disease_risk_li, age, insurance_premium_max):
             list_2[0]=value_min[0]+sum(tmp_value1_rate); list_3[0]=value_min[0]+sum(value_rate[0])
         for i in range(1,5):
             list_2[i]=value_min[i]+int(sum(value_rate[i])); list_3[i]=value_min[i]+int(sum(value_rate[i]))
+        list_2[5]=sum(list_2); list_3[5]=sum(list_3)
             
-        return list_1, list_2, list_3 
+        ipc_df=pd.DataFrame({'내보험료':list_2, '적정보험료':list_3, '최대보험료':list_4}, index=list_1)
+        for i in range(0,3):
+            ipc_df.iloc[:,i]=ipc_df.iloc[:,i].map('{:,.0f}'.format)+'원'
+        
+        return ipc_df
