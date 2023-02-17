@@ -22,6 +22,8 @@ def get_prediction_proba():
 # Create the main function
 def main():
     global prediction_proba
+    st.markdown("<style>body{background-color:black;}</style>", unsafe_allow_html=True)
+
     st.title('Please Enter your *HEALTH METRICS*')
 
     # Get the user inputs
